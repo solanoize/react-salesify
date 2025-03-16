@@ -1,8 +1,6 @@
-### # React Sales Information System (React SISFO Penjualan)
+# React Salesify
 
-React SISFO Penjualan is a sales information system application built with React, designed with a modular and pluggable architecture. This application allows developers to add, remove, or modify modules easily without altering the entire system.
-
-The system provides ready-to-use core libraries that manage various common features such as routing, state management, authentication, and data handling. With this approach, the application can be developed gradually by adding new modules as needed.
+A modular and pluggable sales information system built with React. Designed with a core library architecture providing ready-to-use features like routing, state management, authentication, and data handling. Easily extendable through independent modules without affecting the core system.
 
 ## ✅ Key Features:
 
