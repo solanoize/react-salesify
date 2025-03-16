@@ -29,9 +29,9 @@ npm install
 
 Create a `.env.local` file and fill it with:
 
-```
+```bash
 VITE_BASE_URL=http://localhost:8000
-VITE_BRAND_NAME="React SISFO Penjualan"
+VITE_BRAND_NAME="React Salesify"
 ```
 
 Then, run the project:
