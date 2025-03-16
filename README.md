@@ -22,8 +22,8 @@ Ensure the backend API is downloaded and running, as this project requires an AP
 Clone this project and install the required dependencies:
 
 ```bash
-git clone <thisprojecturl>
-cd
+git clone https://github.com/solanoize/react-salesify
+cd react-salesify
 npm install
 ```
 
