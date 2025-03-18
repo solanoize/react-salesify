@@ -18,9 +18,9 @@ export default function useLocalSession() {
     return localStorage.getItem(key);
   };
 
-  const active = () => {
+  const verify = () => {
     return obtain() ? true : false;
   };
 
-  return { create, revoke, active };
+  return { create, revoke, verify };
 }

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -9,30 +9,73 @@ import {
   FormGroup,
   Row,
 } from "react-bootstrap";
-import { BRAND_NAME, MAIN_PATH } from "../../config/settings";
-import { useAuth, useSession, useUser } from "../hooks";
+import {
+  BACKEND_PROVIDER,
+  BRAND_NAME,
+  FIREBASE_APPLICATION,
+  MAIN_PATH,
+  REST_APPLICATION,
+} from "../../config/settings";
+import {
+  useAuth,
+  useAuthStrategies,
+  useFirebaseAuth,
+  useSession,
+  useUser,
+} from "../hooks";
+import { FaGoogle } from "react-icons/fa";
 
 export default function PageSignIn() {
   const navigate = useNavigate();
   const user = useUser();
-  const auth = useAuth();
   const localSession = useSession();
+  const authStrategies = useAuthStrategies();
 
   const [loading, setLoading] = useState(false);
 
-  const signIn = () => {
+  const signInWithGoogle = () => {
     setLoading(true);
-    auth
-      .signIn(user.model)
+    authStrategies
+      .authenticate()
       .then(() => {
-        localSession.create();
         navigate(MAIN_PATH, { replace: true });
       })
       .catch((error) => {
-        console.log(error);
+        console.warn(error);
       })
       .finally(() => setLoading(false));
   };
+
+  const signIn = () => {
+    setLoading(true);
+    authStrategies
+      .authenticate(user.model)
+      .then(() => {
+        if (authStrategies.provider === REST_APPLICATION) {
+          localSession.create();
+        }
+        navigate(MAIN_PATH, { replace: true });
+      })
+      .catch((error) => {
+        console.warn(error);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    try {
+      if (authStrategies?.isRedirectProvided()) {
+        authStrategies
+          .redirectResult()
+          .then((credential) => {
+            console.log(credential);
+          })
+          .catch((error) => {
+            console.warn(error);
+          });
+      }
+    } catch (error) {}
+  }, []);
 
   return (
     <>
@@ -47,11 +90,28 @@ export default function PageSignIn() {
                   </div>
                 </Card.Title>
                 <FormGroup className="mt-3">
-                  <Form.Label>Username</Form.Label>
+                  <Form.Label>
+                    {authStrategies.provider === FIREBASE_APPLICATION
+                      ? "Email"
+                      : "Username"}
+                  </Form.Label>
                   <Form.Control
                     disabled={loading}
-                    value={user.model.username}
-                    onChange={user.setUsername}
+                    type={
+                      authStrategies.provider === FIREBASE_APPLICATION
+                        ? "email"
+                        : "text"
+                    }
+                    value={
+                      authStrategies.provider === FIREBASE_APPLICATION
+                        ? user.model.email
+                        : user.model.username
+                    }
+                    onChange={
+                      authStrategies.provider === FIREBASE_APPLICATION
+                        ? user.setEmail
+                        : user.setUsername
+                    }
                     size="lg"
                     className="bg-light"
                   />
@@ -77,6 +137,18 @@ export default function PageSignIn() {
                     Sign In
                   </Button>
                 </div>
+                {authStrategies.provider === FIREBASE_APPLICATION && (
+                  <div className="d-grid gap-2 mt-4">
+                    <Button
+                      disabled={loading}
+                      onClick={signInWithGoogle}
+                      variant="danger"
+                      size="lg"
+                    >
+                      <FaGoogle /> Sign In with Google
+                    </Button>
+                  </div>
+                )}
               </Card.Body>
             </Card>
           </Col>

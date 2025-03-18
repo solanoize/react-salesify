@@ -6,3 +6,5 @@ export { default as useModule } from './useModule';
 export { default as useStatusMessage } from './useStatusMessage';
 export { default as useUser } from './useUser';
 export { default as useUtils } from './useUtils';
+export { default as useFirebaseAuth } from "./useFirebaseAuth";
+export { default as useAuthStrategies } from "./useAuthStrategies";

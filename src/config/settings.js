@@ -1,3 +1,4 @@
+
 export const BRAND_NAME =
   import.meta.env.VITE_BRAND_NAME || "React Sales Order";
 
@@ -6,6 +7,7 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const TOKEN_ACCESS = "access";
 export const LOCAL_SESSION_KEY = "sessionID";
 export const LOCAL_SESSION_ENGINE = localStorage;
+export const LOCAL_AUTHENTICATION_VERIFY = true; // work if application is non firebase!
 
 export const SIGNIN_PATH = "/";
 export const MAIN_PATH = "/dashboard";
@@ -32,3 +34,19 @@ export const MODULE_CATEGORIES = {
   MISCELLANEOUS: "Miscellaneous",
   DEMO_TEST: "Demonstration Test",
 };
+
+export const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
+};
+
+export const REST_APPLICATION = "rest";
+export const FIREBASE_APPLICATION = "firebase";
+export const BACKEND_PROVIDER = REST_APPLICATION;
+
+
+

@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import useLocalSession from "../hooks/useLocalSession";
-import { SIGNIN_PATH } from "../../config/settings";
+import { REST_APPLICATION, SIGNIN_PATH } from "../../config/settings";
 import { FaSignOutAlt } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 import { Button } from "react-bootstrap";
+import { useAuthStrategies } from "../hooks";
 
 /**
  * WidgetLogoutButton component renders a button that allows the user to sign out.
@@ -26,24 +27,22 @@ export default function WidgetLogoutButton() {
   const navigate = useNavigate();
   const localSession = useLocalSession();
   const auth = useAuth();
+  const authStrategies = useAuthStrategies();
 
   const signOut = async () => {
     const handler = async () => {
-      await auth.signOut();
-      localSession.revoke();
+      await authStrategies.revoke();
       navigate(SIGNIN_PATH, { replace: true });
     };
+
     try {
-      await handler();
+      await authStrategies.revoke();
+      navigate(SIGNIN_PATH, { replace: true });
     } catch (error) {
-      try {
-        await auth.renew();
-        setTimeout(async () => {
-          await handler();
-        }, 400);
-      } catch (error) {
-        console.log(error);
-      }
+      await authStrategies.renew();
+      setTimeout(async () => {
+        await handler();
+      }, 1000);
     }
   };
 
